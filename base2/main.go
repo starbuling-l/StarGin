@@ -1,4 +1,4 @@
-package base2
+package main
 
 
 /**
@@ -12,8 +12,8 @@ import (
 
 type Engine struct {}
 
-//重载了 ServerHttp 方法
-func (engin *Engine) ServeHTTP(writer http.ResponseWriter,request *http.Request) {
+//engine 实现 ServerHttp 方法
+func (engine *Engine) ServeHTTP(writer http.ResponseWriter,request *http.Request) {
 	//panic("implement me")
 	switch request.URL.Path {
 		case "/":
