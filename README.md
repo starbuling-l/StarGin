@@ -5,8 +5,7 @@
 
   测试：curl http://localhost:9999/
 
-  
+  ​			curl http://localhost:9999/hello
 
-  ​           curl http://localhost:9999/hello
+![image.png](http://ww1.sinaimg.cn/large/007oj4nPly1gkgk9elgjvj30j205cdg0.jpg)
 
-![image-20201107115820608](C:\Users\liuxingguang\AppData\Roaming\Typora\typora-user-images\image-20201107115820608.png)
