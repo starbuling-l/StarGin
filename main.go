@@ -32,18 +32,18 @@ $ curl "http://localhost:9999/xxx"
 
 
 import (
-	"github.com/starbuling-l/StarGin/stargin"
 	"net/http"
+	"star-web/stargin"
 )
 
 func main()  {
-	test :=stargin.New()
+	test := stargin.New()
 	test.GET("/", func(c *stargin.Context) {
 		c.Html(http.StatusOK,"<h1> hello stargin </h1>")
 	})
 
 	test.POST("/login", func(c *stargin.Context) {
-		c.Json(http.StatusOK,stargin.M{
+		c.Json(http.StatusOK, stargin.M{
 			"username":c.PostForm("username"),
 			"password":c.PostForm("password"),
 		})

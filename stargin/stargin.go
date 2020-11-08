@@ -13,7 +13,7 @@ type Engine struct {
 //实现 ServeHTTP 可以实现自逻辑 如果发现该路径有注册则走注册 handler 否则抛出 404异常
 func (engine *Engine) ServeHTTP(writer http.ResponseWriter,request *http.Request) {
 	//panic("implement me")
-	c :=newContext(writer,request)
+	c := newContext(writer,request)
 	engine.router.handle(c)
 }
 
