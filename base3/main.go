@@ -1,14 +1,14 @@
 package main
 
 import (
-	stargin "star-web/base/base3/stargin"
 	"fmt"
 	"net/http"
+	stargin "tar-web/base/base3/stargin"
 )
 
 func main()  {
 	//初始化引擎
-	engine :=stargin.New()
+	engine := stargin.New()
 
 	//实现静态路由
 	engine.GET("/" , func(writer http.ResponseWriter, request *http.Request) {
