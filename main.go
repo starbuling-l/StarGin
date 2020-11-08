@@ -32,8 +32,8 @@ $ curl "http://localhost:9999/xxx"
 
 
 import (
+	"github.com/starbuling-l/star-web/stargin"
 	"net/http"
-	"star-web/stargin"
 )
 
 func main()  {

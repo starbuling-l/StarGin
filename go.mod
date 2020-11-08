@@ -1,4 +1,4 @@
-module github.com/starbuling-l/StarGin
+module github.com/starbuling-l/star-web
 
 go 1.13
 
