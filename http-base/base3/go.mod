@@ -1,4 +1,4 @@
-module StarGin/base3
+module star-web/http-base/base3
 
 go 1.13
 

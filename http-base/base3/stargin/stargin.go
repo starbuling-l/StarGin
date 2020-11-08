@@ -8,7 +8,7 @@ import (
 type Handler func(http.ResponseWriter, *http.Request)
 
 type Engine struct {
-	router map[string] Handler
+	router map[string]Handler
 }
 
 //实现 ServeHTTP 可以实现自逻辑 如果发现该路径有注册则走注册 handler 否则抛出 404异常
@@ -24,8 +24,8 @@ func (engine *Engine) ServeHTTP(writer http.ResponseWriter,request *http.Request
 }
 
 //初始化方法
-func New() *Engine{
-	return &Engine{router:make(map[string]Handler)}
+func New() *Engine {
+	return &Engine{router: make(map[string]Handler)}
 }
 
 //注册路由方法
@@ -44,7 +44,7 @@ func (engine *Engine) Run (addr string)(err error)  {
 }
 
 // get 方法实现
-func (engine *Engine) GET (pattern string ,handler Handler )  {
+func (engine *Engine) GET (pattern string ,handler Handler)  {
 	engine.addRoute("GET",pattern,handler)
 }
 
