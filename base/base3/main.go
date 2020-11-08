@@ -1,7 +1,7 @@
 package main
 
 import (
-	stargin "star-web/http-base/base3/stargin"
+	stargin "star-web/base/base3/stargin"
 	"fmt"
 	"net/http"
 )
