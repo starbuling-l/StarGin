@@ -3,15 +3,18 @@ package stargin
 import (
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 type Router struct {
+	roots    map[string]*node
 	handlers map [string]Handler
 }
 
 func newRouter() *Router {
 	return &Router{handlers: make(map[string]Handler)}
 }
+
 
 func (r *Router)handle(c *Context)  {
 	key :=c.Request.Method + ">>"+c.Request.URL.Path
@@ -23,8 +26,56 @@ func (r *Router)handle(c *Context)  {
 	}
 }
 
-func (r *Router)addRoute(method string,path string,handler Handler)  {
-	key :=method + ">>"+ path
+func parsePattern(pattern string)[]string  {
+	items := strings.Split(pattern,"/")
+
+	parts := make([] string ,0)
+	for  _,item :=range items{
+		if item!="" {
+			parts =append(parts,item)
+			if item[0] == '*' { //只有一个 * 才被允许
+				break
+			}
+		}
+	}
+	return parts
+}
+
+func (r *Router)addRoute(method string,pattern string,handler Handler){
+	parts :=parsePattern(pattern)
+	key :=method + ">>"+ pattern
+	if _,ok:=r.roots[method];!ok {
+		r.roots[method] = &node{}
+	}
+	r.roots[method].insert(pattern,parts,0)
 	r.handlers[key]=handler
 }
 
+func (r *Router)getRoute(method string,path string)(*node,map[string]string)  {
+	searchParts :=parsePattern(path)
+	params := make(map[string]string)
+	if root, ok:=r.roots[method];ok{
+		if n:=root.search(searchParts,0);n!=nil{
+			parts := parsePattern(n.pattern)
+			for index,part :=range parts{
+				if part[0]==':' {
+					params[part[1:]]=searchParts[index]
+				}
+				if part[0]=='*' && len(part) >1{
+					params[part[1:]]=strings.Join(searchParts[index:],"/")
+					break
+				}
+			}
+			return  n, params
+		}
+	}
+	return nil,nil
+}
+
+func (r *Router)getRoutes(method string)[]*node{
+	if root,ok:=r.roots[method];ok{
+		nodes :=make([]*node,0)
+		root.travel(&nodes)
+	}
+	return nil
+}

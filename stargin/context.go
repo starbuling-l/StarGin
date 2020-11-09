@@ -16,6 +16,7 @@ type Context struct {
 	//request info
 	Path   string
 	Method string
+	Params map[string]string
 }
 
 func newContext(w http.ResponseWriter,r *http.Request) *Context {
@@ -25,6 +26,11 @@ func newContext(w http.ResponseWriter,r *http.Request) *Context {
 		Path: r.URL.Path,
 		Method: r.Method,
 	}
+}
+
+func (c *Context)GetParam(key string)string  {
+	 param:=c.Params[key]
+	 return param
 }
 
 func (c *Context)PostForm(key string) string  {
