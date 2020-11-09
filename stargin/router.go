@@ -17,10 +17,11 @@ func newRouter() *Router {
 
 
 func (r *Router)handle(c *Context)  {
-	key :=c.Request.Method + ">>"+c.Request.URL.Path
-	if handler,ok :=r.handlers[key];ok{
-		handler(c)
-	}else{
+	if n,params := r.getRoute(c.Method,c.Path);n!=nil{
+		c.Params = params
+		key :=c.Method + ">>"+ n.pattern
+		r.handlers[key](c)
+	} else{
 		c.Writer.WriteHeader(http.StatusNotFound)
 		fmt.Fprintf(c.Writer,"404 NOT FOUND:%s\n",c.Request.URL)
 	}
