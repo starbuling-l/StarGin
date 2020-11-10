@@ -12,7 +12,10 @@ type Router struct {
 }
 
 func newRouter() *Router {
-	return &Router{handlers: make(map[string]Handler)}
+	return &Router{
+		roots:    make(map[string]*node),
+		handlers: make(map[string]Handler),
+	}
 }
 
 
@@ -47,6 +50,8 @@ func (r *Router)addRoute(method string,pattern string,handler Handler){
 	key :=method + ">>"+ pattern
 	if _,ok:=r.roots[method];!ok {
 		r.roots[method] = &node{}
+
+
 	}
 	r.roots[method].insert(pattern,parts,0)
 	r.handlers[key]=handler
