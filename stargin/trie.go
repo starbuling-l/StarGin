@@ -5,6 +5,11 @@ import (
 	"strings"
 )
 
+/**
+	使用 Trie 树实现动态路由(dynamic route)解析。
+	支持两种模式:name和*filepath
+ */
+
 type node struct {
 	pattern  string  // 待匹配路由，例如 /p/:lang
 	part     string  // 路由中的一部分，例如 :lang

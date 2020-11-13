@@ -6,10 +6,15 @@ import (
 	"net/http"
 )
 
-type M map[string]interface{} //别名
+/**
+上下文(Context)，封装 Request 和 Response ，提供对 JSON、HTML 等返回类型的支持
+todo:提供中间件支持
+*/
+
+type H map[string]interface{} //别名
 
 type Context struct {
-	Writer http.ResponseWriter
+	Writer  http.ResponseWriter
 	Request *http.Request
 	//response info
 	StatusCode int
@@ -19,60 +24,60 @@ type Context struct {
 	Params map[string]string
 }
 
-func newContext(w http.ResponseWriter,r *http.Request) *Context {
+func newContext(w http.ResponseWriter, r *http.Request) *Context {
 	return &Context{
-		Writer: w,
+		Writer:  w,
 		Request: r,
-		Path: r.URL.Path,
-		Method: r.Method,
+		Path:    r.URL.Path,
+		Method:  r.Method,
 	}
 }
 
-func (c *Context)GetParam(key string)string  {
-	 param:=c.Params[key]
-	 return param
+func (c *Context) Param(key string) string {
+	param := c.Params[key]
+	return param
 }
 
-func (c *Context)PostForm(key string) string  {
+func (c *Context) PostForm(key string) string {
 	return c.Request.FormValue(key)
 }
 
-func (c *Context)Query(key string)string {
+func (c *Context) Query(key string) string {
 	return c.Request.URL.Query().Get(key)
 }
 
-func (c *Context)SetStatus(code int) {
-	c.StatusCode =code
+func (c *Context) SetStatus(code int) {
+	c.StatusCode = code
 	c.Writer.WriteHeader(code)
 }
 
-func (c *Context)SetHeader(key string,value string){
-	c.Writer.Header().Set(key,value)
+func (c *Context) SetHeader(key string, value string) {
+	c.Writer.Header().Set(key, value)
 }
 
 //快速构造String/Data/JSON/HTML响应的方法
-func (c *Context)String(code int,key string,value ...interface{})  {
+func (c *Context) String(code int, key string, value ...interface{}) {
 	c.SetHeader("Content-Type", "text/plain")
 	c.SetStatus(code)
-	c.Writer.Write([]byte(fmt.Sprintf(key , value...)))
+	c.Writer.Write([]byte(fmt.Sprintf(key, value...)))
 }
 
-func (c *Context)Json(code int,json interface{})  {
+func (c *Context) Json(code int, json interface{}) {
 	c.SetHeader("Content-Type", "application/json")
 	c.SetStatus(code)
 	encoder := json2.NewEncoder(c.Writer)
-	if err:= encoder.Encode(json);err!=nil{
+	if err := encoder.Encode(json); err != nil {
 		panic(err)
 	}
 }
 
-func (c *Context)Html(code int,html string)  {
+func (c *Context) Html(code int, html string) {
 	c.SetHeader("Content-Type", "text/html")
 	c.SetStatus(code)
 	c.Writer.Write([]byte(html))
 }
 
-func (c *Context)Data(code int ,data []byte)  {
+func (c *Context) Data(code int, data []byte) {
 	c.SetStatus(code)
 	c.Writer.Write(data)
 }
