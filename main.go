@@ -15,23 +15,23 @@ HTTP/1.1 200 OK
 Date: Mon, 12 Aug 2019 18:11:07 GMT
 Content-Length: 18
 Content-Type: text/html; charset=utf-8
-<h1>Hello Gee</h1>
+<h1>Hello StarGin</h1>
 
 (3)
-$ curl "http://localhost:9999/v1/hello?name=geektutu"
-hello geektutu, you're at /v1/hello
+$ curl "http://localhost:9999/v1/hello?name=star"
+hello star, you're at /v1/hello
 
 (4)
-$ curl "http://localhost:9999/v2/hello/geektutu"
-hello geektutu, you're at /hello/geektutu
+$ curl "http://localhost:9999/v2/hello/star"
+hello star, you're at /hello/star
 
 (5)
-$ curl "http://localhost:9999/v2/login" -X POST -d 'username=geektutu&password=1234'
-{"password":"1234","username":"geektutu"}
+$ curl "http://localhost:9999/v2/login" -X POST -d 'username=star&password=123'
+{"password":"123","username":"star"}
 
 (6)
-$ curl "http://localhost:9999/hello"
-404 NOT FOUND: /hello
+$ curl "http://localhost:9999/xxx"
+404 NOT FOUND: /xxx
 */
 import (
 	"github.com/starbuling-l/star-web/stargin"
@@ -41,7 +41,6 @@ import (
 
 func main() {
 	test := stargin.New()
-	log.Println("1111111111111111111111111111111111111")
 	test.GET("/", func(c *stargin.Context) {
 		c.Html(http.StatusOK, "<h1> hello stargin </h1>")
 	})
@@ -85,12 +84,10 @@ func main() {
 		})
 
 		v2.POST("/login", func(c *stargin.Context) {
-			log.Println("222222222222222222222222222222222222222")
-
 			log.Print("username = ",c.PostForm("username"))
 			c.Json(http.StatusOK, stargin.H{
 				"username": c.PostForm("username"),
-			//	"password": c.PostForm("password"),
+				"password": c.PostForm("password"),
 			})
 
 		})
