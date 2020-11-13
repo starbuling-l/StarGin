@@ -1,13 +1,13 @@
 package main
 
 /*
-(1) index
-curl -i http://localhost:9999/index
+(1) /
+curl -i http://localhost:9999/
 HTTP/1.1 200 OK
 Date: Sun, 01 Sep 2019 08:12:23 GMT
 Content-Length: 19
 Content-Type: text/html; charset=utf-8
-<h1>Index Page</h1>
+<h1>hello stargin</h1>
 
 (2) v1
 $ curl -i http://localhost:9999/v1/
@@ -33,6 +33,7 @@ $ curl "http://localhost:9999/v2/login" -X POST -d 'username=star&password=123'
 $ curl "http://localhost:9999/xxx"
 404 NOT FOUND: /xxx
 */
+
 import (
 	"github.com/starbuling-l/star-web/stargin"
 	"log"
