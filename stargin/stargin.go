@@ -28,9 +28,12 @@ func (engine *Engine) Run(addr string) (err error) {
 	return http.ListenAndServe(addr, engine) //第二个参数类型为接口类型 http.Handler 要实现其方法
 }
 
-//实现 ServeHTTP 可以实现自逻辑 如果发现该路径有注册则走注册 handler 否则抛出 404异常
+//实现 ServeHTTP 可以实现自逻辑 如果发现该路径有注册则走注册 handler 否则抛出 404异常 分组添加中间件
 func (engine *Engine) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	//panic("implement me")
 	c := newContext(writer, request)
+	for _, group := range engine.groups {
+		c.handlers=append(c.handlers,group.middlewares...)
+	}
 	engine.router.handle(c)
 }

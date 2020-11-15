@@ -12,9 +12,9 @@ import "log"
 */
 
 type RouterGroup struct {
-	prefix      string         //前缀
-	middlewares [] Handlerfunc //todo 分组中间件
-	engine      *Engine        //循环嵌套可以实现 分组 和 不分组 两种模式 同时所有实例共用一个 engine
+	prefix      string        //前缀
+	middlewares []Handlerfunc //todo 分组中间件
+	engine      *Engine       //循环嵌套可以实现 分组 和 不分组 两种模式 同时所有实例共用一个 engine
 }
 
 func (group *RouterGroup) Group(prefix string) *RouterGroup {
@@ -25,6 +25,11 @@ func (group *RouterGroup) Group(prefix string) *RouterGroup {
 	}
 	engine.groups = append(engine.groups, newGroup)
 	return newGroup
+}
+
+// group 添加中间件
+func (group *RouterGroup) Use(middlewares ...Handlerfunc) {
+	group.middlewares = append(group.middlewares, middlewares...)
 }
 
 //注册路由方法

@@ -2,7 +2,7 @@ package main
 
 /*
 (1) /
-curl -i http://localhost:9999/
+$ curl -i http://localhost:9999/
 HTTP/1.1 200 OK
 Date: Sun, 01 Sep 2019 08:12:23 GMT
 Content-Length: 19
@@ -42,6 +42,7 @@ import (
 
 func main() {
 	test := stargin.New()
+	test.Use(stargin.Logger()) // 使用日志中间件
 	test.GET("/", func(c *stargin.Context) {
 		c.Html(http.StatusOK, "<h1> hello stargin </h1>")
 	})

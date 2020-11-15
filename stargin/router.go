@@ -24,17 +24,20 @@ func (r *Router) handle(c *Context) {
 	if n, params := r.getRoute(c.Method, c.Path); n != nil {
 		c.Params = params
 		key := c.Method + ">>" + n.pattern
-		r.handlers[key](c)
+		c.handlers = append(c.handlers, r.handlers[key])
 	} else {
 		c.Writer.WriteHeader(http.StatusNotFound)
-		fmt.Fprintf(c.Writer, "404 NOT FOUND:%s\n", c.Request.URL)
+		c.handlers = append(c.handlers, func(c *Context) {
+			fmt.Fprintf(c.Writer, "404 NOT FOUND:%s\n", c.Request.URL)
+		})
 	}
+	c.Next()
 }
 
 func parsePattern(pattern string) []string {
 	items := strings.Split(pattern, "/")
 
-	parts := make([] string, 0)
+	parts := make([]string, 0)
 	for _, item := range items {
 		if item != "" {
 			parts = append(parts, item)
