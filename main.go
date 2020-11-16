@@ -35,6 +35,7 @@ $ curl "http://localhost:9999/xxx"
 
 (7)
 $ curl "http://localhost:9999/panic"
+2020/11/16 12:44:54 runtime error: index out of range [100] with length 1
 2020/11/16 12:44:54 [0] /panic in 0s
 */
 
