@@ -20,6 +20,13 @@ func New() *Engine {
 	return engine
 }
 
+//默认使用 Logger,Recovery 中间件
+func Default()*Engine {
+	engine:=New()
+	engine.Use(Logger(),Recovery())
+	return engine
+}
+
 //引擎启动 包装的 ListenAndServe
 func (engine *Engine) Run(addr string) (err error) {
 	//实现了接口方法的 struct 可强转为接口类型

@@ -32,6 +32,10 @@ $ curl "http://localhost:9999/v2/login" -X POST -d 'username=star&password=123'
 (6)
 $ curl "http://localhost:9999/xxx"
 404 NOT FOUND: /xxx
+
+(7)
+$ curl "http://localhost:9999/panic"
+2020/11/16 12:44:54 [0] /panic in 0s
 */
 
 import (
@@ -41,8 +45,9 @@ import (
 )
 
 func main() {
-	test := stargin.New()
-	test.Use(stargin.Logger()) // 使用日志中间件
+	//test := stargin.New()
+	//test.Use(stargin.Logger()) // 使用日志中间件
+	test :=stargin.Default()
 	test.GET("/", func(c *stargin.Context) {
 		c.Html(http.StatusOK, "<h1> hello stargin </h1>")
 	})
@@ -55,8 +60,13 @@ func main() {
 	})
 
 	test.GET("/hello", func(c *stargin.Context) {
-		log.Print("c.path = ",c.Path)
+		//log.Print("c.path = ",c.Path)
 		c.String(http.StatusOK, "hello %s you are at %s\n", c.Query("name"), c.Path)
+	})
+
+	test.GET("/panic", func(c *stargin.Context) {
+		name :=[]string{"star"}
+		c.String(http.StatusOK,name[100])
 	})
 
 	test.GET("/hello/:name", func(c *stargin.Context) {
